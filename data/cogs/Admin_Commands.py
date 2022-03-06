@@ -10,14 +10,10 @@ from discord.ext import commands
 # import permissions
 from discord.ext.commands import has_permissions
 import asyncio
-import json
 from data.functions.MySQL_Connector import MyDB
 import configparser
-
-if __name__ != "__main__":
-    with open("prefix.json") as json_prefix:
-        # makes the name "prefix" a reference to the json file.
-        pre = json.load(json_prefix)
+config = configparser.ConfigParser()
+config.read("./config.ini")
 
 # TODO: Replace @MODUS with config
 # TODO: Replace Support link with config
@@ -155,7 +151,7 @@ class Admin_Commands(commands.Cog):
                 isprefixold = True
 
             if arg is None:
-                c.execute("UPDATE GuildTable SET Prefix = %s WHERE GuildID = %s", (pre["prefix"], ctx.guild.id,))
+                c.execute("UPDATE GuildTable SET Prefix = %s WHERE GuildID = %s", (config["APP"]["Prefix"], ctx.guild.id,))
             else:
                 c.execute("UPDATE GuildTable SET Prefix = %s WHERE GuildID = %s", (arg, ctx.guild.id,))
             c.commit()

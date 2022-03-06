@@ -9,6 +9,7 @@ ReqInstaller.check()
 # Imports the rest of the modules
 import discord
 from discord.ext import commands
+from discord import app_commands
 import logging
 import os
 import glob
@@ -107,10 +108,24 @@ client = commands.AutoShardedBot(
     # shard_ids=(0,),
     intents=intents
     )
-
+tree = app_commands.CommandTree(client)
 # Here we are deleting the standard help function in discord to make our on in a embed later.
 client.remove_command("help")
 
+"""
+============================
+Slash commands procedure
+============================
+"""
+# tree = app_commands.CommandTree(client)
+# # DevGuild = int(APP["DevGuild"])
+#
+#
+# @tree.command(guild=discord.Object(id=int(APP["DevGuild"])))
+# async def slash(interaction: discord.Interaction, number: int, string: str):
+#     await interaction.response.send_message(f'{number=} {string=}', ephemeral=True)
+#
+# tree.add_command(slash)
 """
 ============================
 Login procedure for the bot
@@ -129,10 +144,10 @@ async def on_ready():
           f"\nDiscord.py version: {discord.__version__}"
           f"\n------"
           f"\nBot is serving: {str(len(client.guilds))} guilds.")
+    client.tree = tree
     await client.change_presence(status=discord.Status.online, activity=discord.Game(name=ready_msg))
     if config["LOGGING"]["Logs"] == "False":
         print("[WARN]: Logging is disabled! If this was a mistake. Please enable it in the config under LOGGING.")
-
 
 # starts a client.event
 @client.event
@@ -179,4 +194,4 @@ This is the end of the client.
 """
 
 # Checks token to login the bot into discord.
-client.run(token, bot=True, reconnect=True)
+client.run(token, reconnect=True)

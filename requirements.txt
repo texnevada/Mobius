@@ -1,4 +1,4 @@
-discord.py==1.7.3
+discord.py>=1.7.3
 requests==2.25.1
 aiohttp==3.7.4.post0
 pyspellchecker==0.6.2
